@@ -1,0 +1,100 @@
+sudo apt update && sudo apt upgrade -y
+
+sudo nano /etc/apt/sources.list
+
+sudo apt install build-essential -y
+
+sudo apt install timeshift -y
+
+sudo apt install gnome-shell-extension-manager -y
+
+sudo apt install snapd -y
+
+sudo apt install flatpak
+
+flatpak remote-add --if-not-exists flathub <a class="vglnk" href="https://flathub.org/repo/flathub.flatpakrepo" target="_blank" rel="nofollow noopener">https://flathub.org/repo/flathub.flatpakrepo</a>
+
+sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+sudo apt install flatpak gnome-software-plugin-flatpak
+
+sudo apt install libavcodec-extra vlc
+
+sudo apt install pipenv
+
+apt-get install git
+
+sudo apt install pyqt5-dev-tools qtcreator
+
+sudo apt install qtdesigner
+
+apt-get remove qtcreator
+
+sudo dpkg -i mysql-apt-config_0.8.22-1_all.deb
+
+sudo apt-get install mysql-server
+
+apt-get remove mysql-apt-config
+
+dpkg --get-selections | grep mysq
+
+apt show mysql-server
+
+sudo systemctl status mysql
+
+sudo systemctl enable mysql
+
+mysql -u root -p
+
+sudo apt-get install alien libaio1 unixodbc
+
+sudo add-apt-repository ppa:mozillacorp/mozillavpn
+
+dpkg --purge foo gdebi
+
+echo $PATH
+
+sudo apt install postgresql postgresql-contrib
+
+sudo systemctl status postgresql
+
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb\_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-cache policy docker-ce
+
+sudo apt install docker-ce
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+
+sudo apt autoremove
+
+sudo systemctl start docker
+
+sudo systemctl enable docker
+
+sudo systemctl status docker
+
+sudo group docker
+
+sudo groupadd docker
+
+sudo usermod -aG docker $USER
+
+docker run ubuntu echo 'hello from ubuntu'
+
+docker ps
+
+sudo alien -d oracle-instantclient-basic-21.12.0.0.0-1.el8.x86_64.rpm
+
+sudo dpkg -i oracle-instantclient-basic_21.12.0.0.0-2_amd64.deb
+

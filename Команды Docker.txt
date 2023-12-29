@@ -1,0 +1,73 @@
+docker login container-registry.oracle.com
+
+docker pull container-registry.oracle.com/database/enterprise:12.2.0.1
+
+docker images - посмотреть образы
+
+docker run --name oracle-db -p 3333:1521 -p 3334:5500 12a359cd0528 
+
+#docker run -d --name oracle-db -p 1521:1521 -e ORACLE_PWD=Generator4ik container-registry.oracle.com/database/enterprise:21.3.0.0
+
+docker ps - посмотреть контейнеры;
+
+docker start oracle-db
+
+docker stop oracle-db
+
+docker exec -it oracle-db bash
+
+???/etc/init.d/oracle-db configure
+
+sqlplus / as sysdba
+
+???docker exec -it oracle-db sqlplus
+sys/ПАРОЛЬ_СИСТЕМНОГО_ПОЛЬЗОВАТЕЛЯ_AS_PER_(step 6)@//localhost:1521/ORCLPDB1 AS SYSDBA
+
+#Сборка нескольких контейнеров 
+
+docker-compose up -d
+docker ps --format \
+"table {{.ID}}\t{{.Status}}\t{{.Names}}"
+
+# УЗНАЕМ сети и IP Usually Docker uses the default 172.17. 0.0/16 subnet for container networking.
+
+docker network ls
+
+docker inspect -f \
+'{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+75000c343eb7
+
+docker network inspect -f \
+'{{range .IPAM.Config}}{{.Subnet}}{{end}}'  9f6bc3c15568
+
+
+Или через Docker exec
+docker exec <dockerhive_namenode> cat /etc/hosts
+
+#$ docker network inspect -f \
+'{{json .Containers}}' 9f6bc3c15568 | \
+jq '.[] | .Name + ":" + .IPv4Address'
+
+"dockerhive_hive-metastore-postgresql:172.18.0.6/16"
+"dockerhive_hive-metastore:172.18.0.2/16"
+"dockerhive_namenode:172.18.0.3/16"
+"dockerhive_datanode:172.18.0.5/16"
+"dockerhive_hive-server:172.18.0.4/16"
+
+#Inside the Docker Container
+
+docker exec -it dockerhive_namenode /bin/bash
+
+ip -4 -o address
+
+7: eth0    inet 172.18.0.3/16 brd 172.18.255.255 scope global eth0
+
+We can even find other containers' IP Addresses that are inside a container in the same network:
+
+ping <dockerhive_datanode>
+
+PING dockerhive_datanode (172.18.0.5): 56 data bytes
+64 bytes from 172.18.0.5: icmp_seq=0 ttl=64 time=0.092 ms
+
+
+
