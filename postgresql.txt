@@ -1,0 +1,111 @@
+    УСТАНОВКА ****
+    sudo apt update
+    sudo apt install apt-transport-https lsb-release ca-certificates curl dirmngr gnupg
+    
+        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+    
+    
+    sudo apt update
+sudo apt install postgresql
+****
+Чтобы управлять службой PostgreSQL, требуется знать, как запускать и останавливать ее. Для этого используйте следующие команды.
+    sudo systemctl start postgresql
+    sudo systemctl enable postgresql
+    
+ Чтобы подключиться к оболочке PostgreSQL через терминал.
+
+    sudo -u postgres psql   
+    Чтобы создать новую базу данных, выполните следующую команду.
+    \
+    CREATE USER имя_пользователя WITH PASSWORD 'безопасный_пароль';
+    
+    
+Настройка безопасности PostgreSQL
+
+Обеспечение безопасности PostgreSQL имеет огромное значение. Настроив метод аутентификации и контроль доступа, вы можете обеспечить доступ только авторизованным пользователям. Конфигурационный файл, который необходимо изменить, называется pg_hba.conf. Используйте следующую команду для редактирования этого файла.
+
+    sudo nano /etc/postgresql/<version>/main/pg_hba.conf
+
+Замените <version> на версию PostgreSQL, которая у вас установлена (например, 12).
+
+В файле pg_hba.conf можно указать метод аутентификации для различных типов соединений и определить правила управления доступом.
+
+После завершения установки и настройки очень важно убедиться, что все работает так, как ожидалось. Давайте проверим и получим доступ к оболочке PostgreSQL.
+
+Чтобы получить доступ к PostgreSQL, выполните следующую команду.
+
+    sudo -u postgres psql
+
+***** Создать БД
+CREATE DATABASE name_bd;
+
+***** Список баз
+с помощью команды \l;
+
+***** Войти в БД
+\с name_bd;
+
+*****Переименовать БД
+ALTER DATABASE db RENAME TO appdb;
+
+*****Число доступных подключений
+ALTER DATABASE appdb CONNECTION LIMIT 10;
+
+*****Узнать размер базы
+SELECT pg_database_size('appdb');
+SELECT pg_size_pretty(pg_database_size('appdb'));
+
+
+*****Список схем можно узнать с помощью команды 
+\dn;
+
+**** Список схем можно узнать с помощью команды \dn:
+\c appdb;
+
+CREATE SCHEMA app;
+
+
+На путь поиска схем можно посмотреть с помощью search_path:
+SHOW search_path;
+
+Дополнительно можем посмотреть текущие схемы, в этой базе данных с помощью функции current_schemas():
+SELECT current_schemas(true);
+
+
+Теперь создадим таблицу «t«, в ней создадим строку и с помощью команды \dt посмотрим в какой схеме оказалась эта таблица:
+CREATE TABLE t(s text);
+
+INSERT INTO t VALUES ('Я - таблица t');
+
+\dt
+
+
+Таблицы можно перемещать между схемами с помощью *****
+
+ALTER TABLE t SET SCHEMA app;
+
+*** НО ДЛЯ ДАЛЬНЕЙШЕЙ РАБОТЫ НУЖНО УКАЗАТЬ ПОЛНЫЙ ПУТЬ ПОИСКА:
+SET search_path = public, app;
+Но это установит путь только для текущего сеанса!
+
+
+Установить этот параметр для базы, а не для сеанса можно с помощью :
+
+ALTER DATABASE energy SET search_path = public, app;
+
+Схему нельзя удалить, если в ней есть какие-нибудь объекты. А для удаления схемы вместе с объектами нужно использовать опцию CASCADE:
+
+DROP SCHEMA app;
+
+DROP SCHEMA app CASCADE;
+
+
+Базу данных можно удалить, если к ней нет активных подключений:
+DROP DATABASE appdb;
+
+*** Добавить данные в БД:
+INSERT INTO products (product_no, name, price) VALUES
+    (1, 'Cheese', 9.99),
+    (2, 'Bread', 1.99),
+    (3, 'Milk', 2.99);

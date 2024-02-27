@@ -1,0 +1,68 @@
+sudo apt update
+sudo apt -y upgrade
+sudo apt install python3-venv
+python3 -m venv my_venv
+ls -la
+cd my_venv
+source ./bin/activate my_venv
+python -V
+pip list
+pip install --upgrade pip
+***Установка среды в Лине
+****
+***Установка пакетов для бота****
+pip install pandas
+python -c "import pandas" - проверка через импорт
+pip install pymorphy2 - pymorphy2 — pymorphy2 написан на языке Python (работает под 2.7 и 3.5+). Он умеет:
+
+    приводить слово к нормальной форме (например, “люди -> человек”, или “гулял -> гулять”).
+    ставить слово в нужную форму. Например, ставить слово во множественное число, менять падеж слова и т.д.
+    возвращать грамматическую информацию о слове (число, род, падеж, часть речи и т.д.)
+
+При работе используется словарь OpenCorpora; для незнакомых слов строятся гипотезы. Библиотека достаточно быстрая: в настоящий момент скорость работы - от нескольких тыс слов/сек до > 100тыс слов/сек (в зависимости от выполняемой операции, интерпретатора и установленных пакетов); потребление памяти - 10…20Мб; полностью поддерживается буква ё.
+****
+pip freeze > requirements.txt - создать файл через пип фриз, который содержит описание всех библиотек
+cat requirements.txt запустить, чтоб посмотреть билиотеки
+pip install -r requirements.txt - установка библиотек по аналогу с твоими (версий библиотек)
+
+deactivate - деактивация среды
+
+***************************
+Пишем простого бота ТГ :
+***************************
+# Однократно после запуска виртуальной машины устанавливаем библиотеки pymorphy2 и numpy
+!pip install pymorphy2 numpy
+
+# ----------------------------
+
+# подключим библиотеки
+import  csv
+import pymorphy2
+import re
+
+morph = pymorphy2.MorphAnalyzer(lang='ru')
+
+# Массив вопросов
+questions=[] 
+
+# Массив ответов
+answer=[] 
+
+# Подключаем файл с Google диска, содержащий вопросы/ответы
+# Есть ли жизнь на марсе;Есть
+
+with open("/content/drive/MyDrive/robo-bot/question.txt", "r") as f_obj:
+  reader = csv.reader(f_obj)
+  for row in reader:
+    s=" ".join(row)
+    r=s.split(';')
+    questions.append(r[0])
+    answer.append(r[1])
+
+# выведем список вопросов и ответов
+print (questions)
+print (answer)
+
+
+ 
+
